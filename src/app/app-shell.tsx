@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState, type ReactNode } from "react";
 import { AccountNavLink } from "@/components/AccountNavLink";
 import { BrandMark } from "@/components/BrandMark";
 import { CartNavLink } from "@/components/CartNavLink";
+import { ComingSoon } from "@/components/ComingSoon";
 import { AuthProvider } from "@/features/auth/AuthContext";
 import { CartProvider } from "@/features/cart/CartContext";
 import { api } from "@/lib/api";
@@ -32,14 +33,6 @@ function ShellChrome({ children }: { children: ReactNode }) {
         <p className="store-footer-brand">Wastro</p>
         <p className="store-footer-descriptor">Medical Apparel | Equipment | More</p>
       </footer>
-    </div>
-  );
-}
-
-function ComingSoonScreen() {
-  return (
-    <div className="coming-soon" role="img" aria-label="Wastro — Coming soon. A brand of Wastro Group.">
-      <img src="/coming-soon.png" alt="Wastro — Coming soon. A brand of Wastro Group." />
     </div>
   );
 }
@@ -81,7 +74,7 @@ export default function AppShell({ children }: { children: ReactNode }) {
   }
 
   if (maintenanceMode) {
-    return <ComingSoonScreen />;
+    return <ComingSoon />;
   }
 
   return (
