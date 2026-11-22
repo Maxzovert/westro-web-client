@@ -934,21 +934,281 @@ p {
   position: fixed;
   inset: 0;
   z-index: 1000;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  width: 100%;
+  height: 100%;
+  min-height: 100dvh;
   margin: 0;
-  background: #1a1a1a;
+  color: #fff;
   overflow: hidden;
+  background: #0b0f14;
 }
 
-.coming-soon img {
+.coming-soon-bg,
+.coming-soon-scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.coming-soon-bg img {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
+  transform: scale(1.04);
+  filter: saturate(0.92) contrast(1.05);
+}
+
+.coming-soon-scrim {
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.82) 0%, rgba(0, 0, 0, 0.45) 42%, rgba(0, 0, 0, 0.2) 68%, rgba(0, 0, 0, 0.35) 100%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.12) 38%, rgba(0, 0, 0, 0.72) 100%);
+}
+
+.coming-soon-logo {
+  position: relative;
+  z-index: 2;
+  display: block;
+  width: min(48vw, 190px);
+  height: auto;
+  margin:
+    max(1.1rem, env(safe-area-inset-top))
+    auto
+    0
+    max(1.1rem, env(safe-area-inset-left));
+  justify-self: start;
+  animation: coming-soon-rise 600ms ease both;
+}
+
+.coming-soon-hero {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 100%;
+  min-height: 0;
+  margin: 0;
+  padding: 0 0.25rem;
+  animation: coming-soon-fade 800ms ease both;
+}
+
+.coming-soon-hero img {
+  display: block;
+  width: min(100%, 920px);
+  height: auto;
+  max-height: min(54vh, 520px);
+  object-fit: contain;
+  object-position: center bottom;
+  /* Keep the full group visible — never cover-crop the left side */
+  filter: drop-shadow(0 18px 40px rgba(0, 0, 0, 0.45));
+}
+
+.coming-soon-copy {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  width: min(100%, 560px);
+  margin: 0;
+  padding:
+    0.75rem
+    max(1.1rem, env(safe-area-inset-right))
+    max(1.15rem, env(safe-area-inset-bottom))
+    max(1.1rem, env(safe-area-inset-left));
+  animation: coming-soon-rise 600ms ease 80ms both;
+}
+
+.coming-soon-title {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  font-size: clamp(1.7rem, 7vw, 2.3rem);
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.45);
+}
+
+.coming-soon-title span {
+  display: block;
+}
+
+.coming-soon-title em {
+  font-style: normal;
+  color: var(--wastro-neon-lime);
+}
+
+.coming-soon-text {
+  margin: 0;
+  max-width: 28ch;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.96rem;
+  line-height: 1.45;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.4);
+}
+
+.coming-soon-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.55rem;
+  margin-top: 0.1rem;
+  padding: 0.6rem 1.25rem;
+  border-radius: 999px;
+  background: var(--wastro-neon-lime);
+  color: #111;
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: lowercase;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+}
+
+.coming-soon-note {
+  margin: 0.25rem 0 0;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.64rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
 
 .coming-soon-loading {
-  background: #111111;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: #0b0f14;
+}
+
+@keyframes coming-soon-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes coming-soon-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (min-width: 720px) {
+  .coming-soon-logo {
+    width: min(32vw, 230px);
+    margin-left: 1.75rem;
+    margin-top: 1.5rem;
+  }
+
+  .coming-soon-hero img {
+    width: min(100%, 980px);
+    max-height: min(58vh, 560px);
+  }
+
+  .coming-soon-copy {
+    padding-inline: 1.75rem;
+  }
+
+  .coming-soon-title {
+    font-size: clamp(2rem, 4vw, 2.7rem);
+  }
+}
+
+@media (min-width: 1024px) {
+  .coming-soon {
+    grid-template-columns: minmax(360px, 0.86fr) minmax(0, 1.24fr);
+    grid-template-rows: auto 1fr;
+  }
+
+  .coming-soon-scrim {
+    background:
+      linear-gradient(90deg, rgba(0, 0, 0, 0.88) 0%, rgba(0, 0, 0, 0.55) 34%, rgba(0, 0, 0, 0.18) 58%, rgba(0, 0, 0, 0.28) 100%),
+      linear-gradient(180deg, rgba(0, 0, 0, 0.28) 0%, rgba(0, 0, 0, 0.08) 40%, rgba(0, 0, 0, 0.4) 100%);
+  }
+
+  .coming-soon-logo {
+    grid-column: 1;
+    grid-row: 1;
+    width: min(100%, 280px);
+    margin: clamp(2rem, 4.5vh, 3rem) 0 0 clamp(2.25rem, 4vw, 4rem);
+  }
+
+  .coming-soon-copy {
+    grid-column: 1;
+    grid-row: 2;
+    width: auto;
+    justify-content: center;
+    gap: 1rem;
+    min-height: 100%;
+    padding: 1.25rem clamp(2.25rem, 4vw, 4rem) clamp(1.75rem, 4vh, 2.75rem);
+  }
+
+  .coming-soon-note {
+    margin-top: auto;
+    padding-top: 2rem;
+  }
+
+  .coming-soon-title {
+    font-size: clamp(2.25rem, 2.7vw, 3.1rem);
+  }
+
+  .coming-soon-text {
+    font-size: 1.05rem;
+  }
+
+  .coming-soon-badge {
+    min-height: 2.85rem;
+    padding: 0.75rem 1.45rem;
+  }
+
+  .coming-soon-hero {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 0 1.5rem 0 0;
+  }
+
+  .coming-soon-hero img {
+    width: 100%;
+    max-width: none;
+    height: auto;
+    max-height: 92%;
+    object-fit: contain;
+    object-position: right bottom;
+  }
+}
+
+@media (max-height: 700px) and (max-width: 1023px) {
+  .coming-soon-text {
+    display: none;
+  }
+
+  .coming-soon-hero img {
+    max-height: 40vh;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .coming-soon-logo,
+  .coming-soon-copy,
+  .coming-soon-hero {
+    animation: none;
+  }
 }
 
 @media (max-width: 640px) {
