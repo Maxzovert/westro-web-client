@@ -12,13 +12,16 @@ const collections = [
 function SpringLogo() {
   const drag = useRef<{ start: number; offset: number; id: number } | null>(null);
 
+  const spring = useRef<Animation | null>(null);
+
   function rebound(button: HTMLButtonElement, distance: number) {
+    spring.current?.cancel();
     button.style.translate = "";
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const frames = Array.from({ length: 61 }, (_, i) => ({
-      translate: "0 " + (i === 60 ? 0 : distance * Math.exp(-i / 11) * Math.cos(i / 4.7)) + "px",
+      translate: "0 " + (i === 60 ? 0 : Math.max(-4, distance * Math.exp(-i / 11) * Math.cos(i / 4.7))) + "px",
     }));
-    button.animate(frames, { duration: 940 });
+    spring.current = button.animate(frames, { duration: 940 });
   }
 
   return (
@@ -27,7 +30,8 @@ function SpringLogo() {
         if (!event.isPrimary || event.button !== 0) return;
         const button = event.currentTarget;
         const current = parseFloat(getComputedStyle(button).translate.split(" ")[1]) || 0;
-        button.getAnimations().forEach(animation => animation.cancel());
+        spring.current?.cancel();
+        button.style.translate = "0 " + current + "px";
         drag.current = { start: event.clientY - current, offset: current, id: event.pointerId };
         button.setPointerCapture(event.pointerId);
       }}
@@ -42,7 +46,7 @@ function SpringLogo() {
         const pull = drag.current;
         if (!pull || pull.id !== event.pointerId) return;
         drag.current = null;
-        rebound(event.currentTarget, pull.offset);
+        rebound(event.currentTarget, pull.offset || 8);
       }}
       onClick={(event) => { if (event.detail === 0) rebound(event.currentTarget, 35); }}>
       <Image unoptimized src="/logo.png" alt="" width={130} height={57} priority draggable={false} />
